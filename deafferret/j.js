@@ -6,12 +6,16 @@ var Robot = function(robot) {
 };
 
 var jstate = {};
-jstate.nextRotateCannon = 10;
+jstate.nextRotateCannon = 1; 
 
 Robot.prototype.onIdle = function(ev) {
-  //console.log("JAY0 " + jstate.nextRotateCannon);
-  console.log("JAY0 " + ev.nextRotateCannon);
   ev.robot.clone(); 
+  if (jstate.nextRotateCannon > 60 || jstate.nextRotateCannon < 60) {
+     // jstate.nextRotateCannon *= 6;    
+  } else {  
+     jstate.nextRotateCannon *= -2; 
+  }
+  console.log("JAY0 " + jstate.nextRotateCannon);
   ev.robot.ahead(20);
   ev.robot.turn(10);
   ev.robot.rotateCannon(jstate.nextRotateCannon);
@@ -38,13 +42,8 @@ Robot.prototype.onScannedRobot = function(ev) {
     ev.robot.parentId == ev.scannedRobot.id ||  // don't shoot parent
     ev.robot.id == ev.scannedRobot.parentId     // don't shoot child
   ) { return } 
-  ev.robot.fire();
-  if (jstate.nextRotateCannon > 0) { 
-    jstate.nextRotateCannon = -20;
-  } else {
-    jstate.nextRotateCannon = 20;
-  }
-  
+  ev.robot.fire();  
+  jstate.nextRotateCannon = -10;   
     //ev.robot.log(ev.robot.position.x);
 };
 
