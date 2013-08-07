@@ -6,7 +6,8 @@ var Robot = function(robot) {
 };
 
 var jstate = {};
-jstate.nextRotateCannon = 1; 
+jstate.nextRotateCannon = 1;
+jstate.moveOrNot = 1;
 
 Robot.prototype.onIdle = function(ev) {
   ev.robot.clone(); 
@@ -16,7 +17,9 @@ Robot.prototype.onIdle = function(ev) {
      jstate.nextRotateCannon *= -2; 
   }
   console.log("JAY0 " + jstate.nextRotateCannon);
-  ev.robot.ahead(20);
+  if (jstate.moveOrNot++ % 7) {
+     ev.robot.ahead(10);
+  }
   ev.robot.turn(10);
   ev.robot.rotateCannon(jstate.nextRotateCannon);
 //    robot.back(100);
@@ -43,12 +46,15 @@ Robot.prototype.onScannedRobot = function(ev) {
     ev.robot.id == ev.scannedRobot.parentId     // don't shoot child
   ) { return } 
   ev.robot.fire();  
-  jstate.nextRotateCannon = -10;   
+  jstate.nextRotateCannon = -10;  
     //ev.robot.log(ev.robot.position.x);
 };
 
 // ohhh... we were hit by another robot...
 Robot.prototype.onHitByBullet = function(ev) {
+  ev.robot.disappear();
+  ev.robot.turn(90);
+  ev.robot.ahead(100);
     //robot.turn(90 - ev.bulletBearing);
 };
 
