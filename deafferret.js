@@ -1,3 +1,4 @@
+//   http://fightcodegame.com/robots/update/20973/
 
 //FightCode can only understand your robot
 //if its class is called Robot
